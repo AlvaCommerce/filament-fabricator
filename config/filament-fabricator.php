@@ -32,6 +32,10 @@ return [
     'page-resource' => \Z3d0X\FilamentFabricator\Resources\PageResource::class,
 
     'enable-view-page' => false,
+    
+    'locale' => 'en',
+    
+    'locales' => [],
 
     /**
      * Whether to hook into artisan's core commands to clear and refresh page route caches along with the rest.

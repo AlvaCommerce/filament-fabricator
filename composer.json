@@ -38,7 +38,10 @@
         "psr-4": {
             "Z3d0X\\FilamentFabricator\\": "src",
             "Z3d0X\\FilamentFabricator\\Database\\Factories\\": "database/factories"
-        }
+        },
+        "files": [
+            "src/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

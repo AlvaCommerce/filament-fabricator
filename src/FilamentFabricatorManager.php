@@ -202,14 +202,25 @@ class FilamentFabricatorManager
 
         return $page?->getUrl($args);
     }
-    
+
     public function getDefaultLocale(): string
     {
-        return config('app.locale');
+        return config('filament-fabricator.locale');
     }
-    
-    public function getLocales(): array 
+
+    public function getLocales(): array
     {
-        return config('app.locales');
+        return config('filament-fabricator.locales');
+    }
+
+    public function route(string $name, array $parameters, bool $absolute): ?string
+    {
+        $locale = $parameters['locale'] ?? $this->getDefaultLocale();
+
+        $page = app(PageRoutesService::class)->getPageFromUri("{$locale}/{$name}");
+        if (is_null($page)) {
+            return null;
+        }
+        return $page->getUrl();
     }
 }
