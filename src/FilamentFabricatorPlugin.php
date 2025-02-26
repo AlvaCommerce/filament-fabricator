@@ -13,6 +13,7 @@ class FilamentFabricatorPlugin implements Plugin
     const ID = 'filament-fabricator';
 
     protected BlockPickerStyle|Closure|null $blockPickerStyle = null;
+    protected array $defaultLocales = [];
 
     public static function make(): static
     {
@@ -59,5 +60,27 @@ class FilamentFabricatorPlugin implements Plugin
         $plugin = filament(app(static::class)->getId());
 
         return $plugin;
+    }
+
+    public function defaultLocales(array $defaultLocales = []): static
+    {
+        $this->defaultLocales = $defaultLocales;
+
+        return $this;
+    }
+    
+    public function getDefaultLocales(): array
+    {
+        return $this->defaultLocales;
+    }
+    
+    public function getLocalOptions()
+    {
+        $localOptions = [];
+        foreach ($this->getDefaultLocales() as $locale) {
+            $localOptions[$locale] = locale_get_display_name($locale);
+        }
+        
+        return $localOptions;
     }
 }

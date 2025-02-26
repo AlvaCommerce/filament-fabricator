@@ -78,6 +78,7 @@ class FilamentFabricatorServiceProvider extends PackageServiceProvider
     public function bootingPackage(): void
     {
         if (! $this->app->runningInConsole()) {
+
             Route::bind('filamentFabricatorPage', function ($value) {
                 /**
                  * @var PageRoutesService $routesService

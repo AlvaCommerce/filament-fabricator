@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
 use Z3d0X\FilamentFabricator\Facades\FilamentFabricator;
+use Z3d0X\FilamentFabricator\FilamentFabricatorPlugin;
 use Z3d0X\FilamentFabricator\Forms\Components\PageBuilder;
 use Z3d0X\FilamentFabricator\Models\Contracts\Page as PageContract;
 use Z3d0X\FilamentFabricator\Resources\PageResource\Pages;
@@ -84,7 +85,9 @@ class PageResource extends Resource
 
                                 TextInput::make('slug')
                                     ->label(__('filament-fabricator::page-resource.labels.slug'))
-                                    ->unique(ignoreRecord: true, modifyRuleUsing: fn (Unique $rule, Get $get) => $rule->where('parent_id', $get('parent_id')))
+                                    ->unique(ignoreRecord: true, modifyRuleUsing: fn (Unique $rule, Get $get) => $rule
+                                        ->where('parent_id', $get('parent_id'))
+                                            ->where('locale', $get('locale')))
                                     ->afterStateUpdated(function (Set $set) {
                                         $set('is_slug_changed_manually', true);
                                     })
@@ -101,6 +104,13 @@ class PageResource extends Resource
                                     ->label(__('filament-fabricator::page-resource.labels.layout'))
                                     ->options(FilamentFabricator::getLayouts())
                                     ->default(fn () => FilamentFabricator::getDefaultLayoutName())
+                                    ->live()
+                                    ->required(),
+
+                                Select::make('locale')
+//                                    ->label(__('filament-fabricator::page-resource.labels.layout'))
+                                    ->label(__('Locale'))
+                                    ->options(FilamentFabricatorPlugin::get()->getLocalOptions())
                                     ->live()
                                     ->required(),
 
@@ -151,6 +161,13 @@ class PageResource extends Resource
 
                 TextColumn::make('layout')
                     ->label(__('filament-fabricator::page-resource.labels.layout'))
+                    ->badge()
+                    ->toggleable()
+                    ->sortable(),
+
+                TextColumn::make('locale')
+                    ->label(__('Locale'))
+//                    ->label(__('filament-fabricator::page-resource.labels.layout'))
                     ->badge()
                     ->toggleable()
                     ->sortable(),

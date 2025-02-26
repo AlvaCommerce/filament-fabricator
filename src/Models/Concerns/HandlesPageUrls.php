@@ -46,6 +46,7 @@ trait HandlesPageUrls
              * @var ?Page $parent
              */
             $parent = $this->parent;
+            $localeUri = $this->locale === null ? FilamentFabricator::getDefaultLocale() : Str::start($this->locale, '/');
 
             // If there's no parent page, then the "parent" URI is just the routing prefix.
             $parentUri = is_null($parent) ? (FilamentFabricator::getRoutingPrefix() ?? '/') : $parent->getUrl($args);
@@ -63,7 +64,7 @@ trait HandlesPageUrls
             // Therefore the page's URL is simply its URI.
             // This avoids having two consecutive slashes.
             if ($parentUri === '/') {
-                return $selfUri;
+                return "{$localeUri}{$selfUri}";
             }
 
             // Remove any trailing slash in the parent URI since
@@ -71,7 +72,7 @@ trait HandlesPageUrls
             // This avoids having two consecutive slashes.
             $parentUri = rtrim($parentUri, '/');
 
-            return "{$parentUri}{$selfUri}";
+            return "{$localeUri}{$parentUri}{$selfUri}";
         });
     }
 

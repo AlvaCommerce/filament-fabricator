@@ -202,4 +202,14 @@ class FilamentFabricatorManager
 
         return $page?->getUrl($args);
     }
+    
+    public function getDefaultLocale(): string
+    {
+        return config('app.locale');
+    }
+    
+    public function getLocales(): array 
+    {
+        return config('app.locales');
+    }
 }

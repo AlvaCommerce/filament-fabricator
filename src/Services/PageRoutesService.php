@@ -38,7 +38,6 @@ class PageRoutesService
         // Not doing so would result in a false negative.
         $mapping = $this->getUriToIdMapping();
         $uri = Str::start($uri, '/');
-
         return $mapping[$uri] ?? -1;
     }
 
@@ -108,6 +107,11 @@ class PageRoutesService
      */
     public function findPageOrFail(string $uri): Page&Model
     {
+        $locale = $uri === '/' ? null : Str::before($uri, '/');
+        if (!in_array($locale, FilamentFabricator::getLocales())) {
+            $locale = FilamentFabricator::getDefaultLocale();
+        }
+        $uri = Str::start($uri, "{$locale}/");
         $id = $this->getPageIdFromUri($uri);
 
         // If the page doesn't exists, we know getPageIdFromUri
