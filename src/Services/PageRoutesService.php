@@ -111,7 +111,7 @@ class PageRoutesService
         if (!in_array($locale, FilamentFabricator::getLocales())) {
             $locale = FilamentFabricator::getDefaultLocale();
         }
-        app()->setLocale($locale);
+        app()->setLocale($locale);//TODO: move inside the project
         $uri = Str::start($uri, "{$locale}/");
         $id = $this->getPageIdFromUri($uri);
 
